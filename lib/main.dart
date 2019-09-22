@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
-import 'package:logger/logger.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
 const String testDevice = 'MobileId';
@@ -10,6 +9,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
+//  stderr.writeIn("THE ROOT");
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -90,24 +90,19 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-
-
-
   GoogleMapController mapController;
-  var logger = Logger();
   final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final allshelters = await locations.getShelters();
-    logger.d(allshelters);
     setState(() {
       _markers.clear();
       for (final shelter in allshelters.shelters) {
         final marker = Marker(
           markerId: MarkerId(shelter.name),
-          position: LatLng(shelter.lat, shelter.lng),
+          position: LatLng(shelter.latitude, shelter.longitude),
           infoWindow: InfoWindow(
             title: shelter.name,
-            snippet: shelter.address + shelter.capacity.toString(),
+            snippet: shelter.freeformAddress + shelter.capacity.toString(),
           ),
         );
         _markers[shelter.name] = marker;

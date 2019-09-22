@@ -8,28 +8,30 @@ part of 'locations.dart';
 
 LatLng _$LatLngFromJson(Map<String, dynamic> json) {
   return LatLng(
-      lat: (json['lat'] as num)?.toDouble(),
-      lng: (json['lng'] as num)?.toDouble());
+      latitude: (json['latitude'] as num)?.toDouble(),
+      longitude: (json['longitude'] as num)?.toDouble());
 }
 
-Map<String, dynamic> _$LatLngToJson(LatLng instance) =>
-    <String, dynamic>{'lat': instance.lat, 'lng': instance.lng};
+Map<String, dynamic> _$LatLngToJson(LatLng instance) => <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude
+    };
 
 Shelter _$ShelterFromJson(Map<String, dynamic> json) {
   return Shelter(
-      address: json['address'] as String,
-      lat: (json['lat'] as num)?.toDouble(),
-      lng: (json['lng'] as num)?.toDouble(),
+      freeformAddress: json['freeformAddress'] as String,
+      latitude: (json['latitude'] as num)?.toDouble(),
+      longitude: (json['longitude'] as num)?.toDouble(),
       name: json['name'] as String,
       capacity: (json['capacity'] as num)?.toDouble(),
       score: (json['score'] as num)?.toDouble());
 }
 
 Map<String, dynamic> _$ShelterToJson(Shelter instance) => <String, dynamic>{
-      'address': instance.address,
+      'freeformAddress': instance.freeformAddress,
       'capacity': instance.capacity,
-      'lat': instance.lat,
-      'lng': instance.lng,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
       'name': instance.name,
       'score': instance.score
     };

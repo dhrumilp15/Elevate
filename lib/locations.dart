@@ -11,41 +11,22 @@ part 'locations.g.dart';
 @JsonSerializable()
 class LatLng {
   LatLng({
-    this.lat,
-    this.lng,
+    this.latitude,
+    this.longitude,
   });
 
   factory LatLng.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
   Map<String, dynamic> toJson() => _$LatLngToJson(this);
 
-  final double lat;
-  final double lng;
+  final double latitude;
+  final double longitude;
 }
-
-//@JsonSerializable()
-//class Region {
-//  Region({
-//    this.coords,
-//    this.id,
-//    this.name,
-//    this.zoom,
-//  });
-//
-//  factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(json);
-//  Map<String, dynamic> toJson() => _$RegionToJson(this);
-//
-//  final LatLng coords;
-//  final String id;
-//  final String name;
-//  final double zoom;
-//}
-
 @JsonSerializable()
 class Shelter {
   Shelter({
-    this.address,
-    this.lat,
-    this.lng,
+    this.freeformAddress,
+    this.latitude,
+    this.longitude,
     this.name,
     this.capacity,
     this.score,
@@ -53,10 +34,10 @@ class Shelter {
   factory Shelter.fromJson(Map<String, dynamic> json) => _$ShelterFromJson(json);
   Map<String, dynamic> toJson() => _$ShelterToJson(this);
 
-  final String address;
+  final String freeformAddress;
   final double capacity;
-  final double lat;
-  final double lng;
+  final double latitude;
+  final double longitude;
   final String name;
   final double score;
 }
@@ -83,11 +64,15 @@ Future<Locations> getShelters() async {
   double long = -79.3825738;
 
   var googleLocationsURL = 'https://specter:8080/shelter/analyse?lat=${lat}&lon=${long}&month=${month}';
+  var biggus = '[{"capacity": 420, "freeformAddress": "dickus", "latitude": 43.6484763, "longitude": -79.3825738, "name": "Tonyc caboose", "score": 69}]';
 
-  // Retrieve the locations of Google offices
+  print("biggus: " + biggus);
+  print(json.decode(biggus));
+
   final response = await http.get(googleLocationsURL);
   if (response.statusCode == 200) {
-//    print("RIGHT HERE: " + response.body);
+    stderr.writeln(biggus);
+    stderr.writeln(json.decode(biggus));
     return Locations.fromJson(json.decode(response.body));
   } else {
     throw HttpException(
