@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) => MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: const Text('Google Office Locations'),
+            title: const Text('Safe Home'),
             backgroundColor: Colors.green[700],
           ),
           body: GoogleMap(
