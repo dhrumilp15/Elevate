@@ -23,6 +23,9 @@ class _MyAppState extends State<MyApp> {
     }
   }
   final Map<String, Marker> _markers = {};
+
+//  _markers
+
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices = await locations.getGoogleOffices();
     setState(() {
@@ -37,23 +40,6 @@ class _MyAppState extends State<MyApp> {
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(_colour(shelter.percentage)),
           onTap: () {
-            return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Not in stock'),
-                  content: const Text('This item is no longer available'),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
           },
         );
         _markers[shelter.name] = marker;

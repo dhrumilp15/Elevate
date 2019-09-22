@@ -31,7 +31,8 @@ class Shelter {
       this.capacity,
       this.score,
       this.occupancy,
-      this.percentage
+      this.percentage,
+      this.postalcode
 //    this.phone,
 //    this.region,
       });
@@ -50,6 +51,7 @@ class Shelter {
   final String name;
   final double capacity;
   final double percentage;
+  final String postalcode;
 
 //  final String phone;
 //  final String region;
@@ -68,7 +70,7 @@ class Locations {
   final List<Shelter> shelters;
 }
 
-Future<Locations> getGoogleOffices() async {
+Future<Locations> getGoogleOffices(String postal) async {
   const googleLocationsURL = 'https://about.google/static/data/locations.json';
   var now = DateTime.now();
   var formatter = DateFormat('MMMM');
