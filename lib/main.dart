@@ -15,18 +15,20 @@ class _MyAppState extends State<MyApp> {
     final googleOffices = await locations.getGoogleOffices();
     setState(() {
       _markers.clear();
-      final marker = Marker(
-        markerId: MarkerId("athens"),
-        position: LatLng(56.172249, 10.187372),
-        infoWindow: InfoWindow(
-          title: "aarhus",
-          snippet: "sda",
-        ),
-      );
-//      for (final office in googleOffices.offices) {
+      for (final shelter in googleOffices.shelters) {
+        final marker = Marker(
+          markerId: MarkerId(shelter.name),
+          position: LatLng(shelter.latitude, shelter.longitude),
+          infoWindow: InfoWindow(
+            title: shelter.name,
+            snippet: shelter.freeformAddress,
+          ),
+          onTap: () {
 
-        _markers["athens"] = marker;
-//      }
+          }
+        );
+        _markers[shelter.name] = marker;
+      }
     });
   }
 
@@ -40,8 +42,8 @@ class _MyAppState extends State<MyApp> {
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
-          target: const LatLng(0, 0),
-          zoom: 2,
+          target: const LatLng(43.6484763,-79.3825738),
+          zoom: 11.5,
         ),
         markers: _markers.values.toSet(),
       ),

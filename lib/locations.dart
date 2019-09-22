@@ -2,69 +2,88 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
-
+import 'package:intl/intl.dart';
 part 'locations.g.dart';
 
 @JsonSerializable()
 class LatLng {
   LatLng({
-    this.lat,
-    this.lng,
+    this.latitude,
+    this.longitude,
   });
 
   factory LatLng.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
   Map<String, dynamic> toJson() => _$LatLngToJson(this);
 
-  final double lat;
-  final double lng;
+  final double latitude;
+  final double longitude;
 }
 
 @JsonSerializable()
-class Office {
-  Office({
-    this.address,
-    this.id,
-    this.image,
-    this.lat,
-    this.lng,
+class Shelter {
+  Shelter({
+    this.freeformAddress,
+//    this.id,
+//    this.image,
+    this.latitude,
+    this.longitude,
     this.name,
-    this.phone,
-    this.region,
+    this.capacity,
+    this.score,
+    this.occupancy
+//    this.phone,
+//    this.region,
   });
 
-  factory Office.fromJson(Map<String, dynamic> json) => _$OfficeFromJson(json);
-  Map<String, dynamic> toJson() => _$OfficeToJson(this);
+  factory Shelter.fromJson(Map<String, dynamic> json) => _$ShelterFromJson(json);
+  Map<String, dynamic> toJson() => _$ShelterToJson(this);
 
-  final String address;
-  final String id;
-  final String image;
-  final double lat;
-  final double lng;
+  final String freeformAddress;
+  final double score;
+  final double occupancy;
+//  final String id;
+//  final String image;
+  final double latitude;
+  final double longitude;
   final String name;
-  final String phone;
-  final String region;
+  final double capacity;
+
+//  final String phone;
+//  final String region;
 }
 
 @JsonSerializable()
 class Locations {
   Locations({
-    this.offices,
+    this.shelters,
   });
 
   factory Locations.fromJson(Map<String, dynamic> json) =>
       _$LocationsFromJson(json);
   Map<String, dynamic> toJson() => _$LocationsToJson(this);
 
-  final List<Office> offices;
+  final List<Shelter> shelters;
 }
 
 Future<Locations> getGoogleOffices() async {
 
   const googleLocationsURL = 'https://about.google/static/data/locations.json';
+  var now = DateTime.now();
+  var formatter = DateFormat('MMMM');
+  String month = formatter.format(now);
+  String postal = "M1E 2M6";
+
+  var newlocURL = 'http://10.0.2.107:8080/shelter/analyse?month=${month}&postalCode=${postal}';
 
   // Retrieve the locations of Google offices
-  final response = await http.get(googleLocationsURL);
+  final response = await http.get(newlocURL);
   if (response.statusCode == 200) {
+//    Map<String, dynamic> jsonboi = json.decode(response.body);
+//    double counter = 0;
+//    for (final shelter in jsonboi['shelters']) {
+//      jsonboi["id"] = counter.toString();
+//      counter++;
+//    }
     return Locations.fromJson(json.decode(response.body));
   } else {
     throw HttpException(
