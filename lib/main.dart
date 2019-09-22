@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'locations.dart' as locations;
-import 'package:logger/logger.dart';
-
+import 'package:logging/logging.dart';
 
 void main() => runApp(MyApp());
 
@@ -49,26 +48,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GoogleMapController mapController;
-  var logger = Logger();
   final Map<String, Marker> _markers = {};
+
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final allshelters = await locations.getShelters();
-    logger.d(allshelters);
+    print("ho ho ho");
     setState(() {
+      print("HO HO HO");
       _markers.clear();
       for (final shelter in allshelters.shelters) {
         final marker = Marker(
           markerId: MarkerId(shelter.name),
-          position: LatLng(shelter.lat, shelter.lng),
+          position: LatLng(shelter.latitude, shelter.longitude),
           infoWindow: InfoWindow(
             title: shelter.name,
-            snippet: shelter.address + shelter.capacity.toString(),
+            snippet: shelter.freeformAddress + shelter.capacity.toString(),
           ),
         );
         _markers[shelter.name] = marker;
       }
     });
   }
+
   @override
   Widget build(BuildContext context) => MaterialApp(
       home: Scaffold(
