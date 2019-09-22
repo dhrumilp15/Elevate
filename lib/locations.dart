@@ -70,7 +70,7 @@ class Locations {
   final List<Shelter> shelters;
 }
 
-Future<Locations> getGoogleOffices(String postal) async {
+Future<Locations> getGoogleOffices() async {
   const googleLocationsURL = 'https://about.google/static/data/locations.json';
   var now = DateTime.now();
   var formatter = DateFormat('MMMM');
