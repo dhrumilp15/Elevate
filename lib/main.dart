@@ -24,27 +24,33 @@ class _MyAppState extends State<MyApp> {
   }
   final Map<String, Marker> _markers = {};
 
-//  _markers
-
-  Future<void> _onMapCreated(GoogleMapController controller) async {
-    final googleOffices = await locations.getGoogleOffices();
+  _getmarkers(String postalcode) async
+  {
+    final shelters = await locations.getGoogleOffices(postalcode);
     setState(() {
       _markers.clear();
-      for (final shelter in googleOffices.shelters) {
+      for (final shelter in shelters.shelters) {
         final marker = Marker(
           markerId: MarkerId(shelter.name),
           position: LatLng(shelter.latitude, shelter.longitude),
           infoWindow: InfoWindow(
-            title: shelter.name,
-            snippet: shelter.freeformAddress
+              title: shelter.name,
+              snippet: shelter.postalCode
           ),
           icon: BitmapDescriptor.defaultMarkerWithHue(_colour(shelter.percentage)),
           onTap: () {
+            _getmarkers(shelter.postalCode);
           },
         );
         _markers[shelter.name] = marker;
       }
     });
+
+  }
+
+  Future<void> _onMapCreated(GoogleMapController controller) async {
+//    final googleOffices = await locations.getGoogleOffices("");
+    _getmarkers("M1E 2M6");
   }
 
   @override

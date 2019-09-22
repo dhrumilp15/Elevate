@@ -26,7 +26,8 @@ Shelter _$ShelterFromJson(Map<String, dynamic> json) {
       capacity: (json['capacity'] as num)?.toDouble(),
       score: (json['score'] as num)?.toDouble(),
       occupancy: (json['occupancy'] as num)?.toDouble(),
-      percentage: (json['percentage'] as num)?.toDouble());
+      percentage: (json['percentage'] as num)?.toDouble(),
+      postalCode: json['postalCode'] as String);
 }
 
 Map<String, dynamic> _$ShelterToJson(Shelter instance) => <String, dynamic>{
@@ -37,7 +38,8 @@ Map<String, dynamic> _$ShelterToJson(Shelter instance) => <String, dynamic>{
       'longitude': instance.longitude,
       'name': instance.name,
       'capacity': instance.capacity,
-      'percentage': instance.percentage
+      'percentage': instance.percentage,
+      'postalCode': instance.postalCode
     };
 
 Locations _$LocationsFromJson(Map<String, dynamic> json) {

@@ -21,8 +21,8 @@ class LatLng {
 
 @JsonSerializable()
 class Shelter {
-  Shelter(
-      {this.freeformAddress,
+  Shelter({
+      this.freeformAddress,
 //    this.id,
 //    this.image,
       this.latitude,
@@ -32,7 +32,7 @@ class Shelter {
       this.score,
       this.occupancy,
       this.percentage,
-      this.postalcode
+      this.postalCode
 //    this.phone,
 //    this.region,
       });
@@ -51,8 +51,7 @@ class Shelter {
   final String name;
   final double capacity;
   final double percentage;
-  final String postalcode;
-
+  final String postalCode;
 //  final String phone;
 //  final String region;
 }
@@ -70,25 +69,18 @@ class Locations {
   final List<Shelter> shelters;
 }
 
-Future<Locations> getGoogleOffices() async {
+Future<Locations> getGoogleOffices(String postalcode) async {
   const googleLocationsURL = 'https://about.google/static/data/locations.json';
   var now = DateTime.now();
   var formatter = DateFormat('MMMM');
   String month = formatter.format(now);
-  String postal = "M1E 2M6";
 
   var newlocURL =
-      'http://10.0.2.107:8080/shelter/analyse?month=${month}&postalCode=${postal}';
+      'http://10.0.2.107:8080/shelter/analyse?month=${month}&postalCode=${postalcode}';
 
   // Retrieve the locations of Google offices
   final response = await http.get(newlocURL);
   if (response.statusCode == 200) {
-//    Map<String, dynamic> jsonboi = json.decode(response.body);
-//    double counter = 0;
-//    for (final shelter in jsonboi['shelters']) {
-//      shelter["capacious"] = shelter["occupancy"] / shelter["capacity"];
-//      counter++;
-//    }
     return Locations.fromJson(json.decode(response.body));
   } else {
     throw HttpException(
