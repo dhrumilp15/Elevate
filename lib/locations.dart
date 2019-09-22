@@ -21,21 +21,23 @@ class LatLng {
 
 @JsonSerializable()
 class Shelter {
-  Shelter({
-    this.freeformAddress,
+  Shelter(
+      {this.freeformAddress,
 //    this.id,
 //    this.image,
-    this.latitude,
-    this.longitude,
-    this.name,
-    this.capacity,
-    this.score,
-    this.occupancy
+      this.latitude,
+      this.longitude,
+      this.name,
+      this.capacity,
+      this.score,
+      this.occupancy,
+      this.percentage
 //    this.phone,
 //    this.region,
-  });
+      });
 
-  factory Shelter.fromJson(Map<String, dynamic> json) => _$ShelterFromJson(json);
+  factory Shelter.fromJson(Map<String, dynamic> json) =>
+      _$ShelterFromJson(json);
   Map<String, dynamic> toJson() => _$ShelterToJson(this);
 
   final String freeformAddress;
@@ -47,6 +49,7 @@ class Shelter {
   final double longitude;
   final String name;
   final double capacity;
+  final double percentage;
 
 //  final String phone;
 //  final String region;
@@ -66,14 +69,14 @@ class Locations {
 }
 
 Future<Locations> getGoogleOffices() async {
-
   const googleLocationsURL = 'https://about.google/static/data/locations.json';
   var now = DateTime.now();
   var formatter = DateFormat('MMMM');
   String month = formatter.format(now);
   String postal = "M1E 2M6";
 
-  var newlocURL = 'http://10.0.2.107:8080/shelter/analyse?month=${month}&postalCode=${postal}';
+  var newlocURL =
+      'http://10.0.2.107:8080/shelter/analyse?month=${month}&postalCode=${postal}';
 
   // Retrieve the locations of Google offices
   final response = await http.get(newlocURL);
@@ -81,14 +84,14 @@ Future<Locations> getGoogleOffices() async {
 //    Map<String, dynamic> jsonboi = json.decode(response.body);
 //    double counter = 0;
 //    for (final shelter in jsonboi['shelters']) {
-//      jsonboi["id"] = counter.toString();
+//      shelter["capacious"] = shelter["occupancy"] / shelter["capacity"];
 //      counter++;
 //    }
     return Locations.fromJson(json.decode(response.body));
   } else {
     throw HttpException(
         'Unexpected status code ${response.statusCode}:'
-            ' ${response.reasonPhrase}',
+        ' ${response.reasonPhrase}',
         uri: Uri.parse(googleLocationsURL));
   }
 }
